@@ -77,7 +77,6 @@ backend/
 │   │   └── env.ts             # Loads & exports validated env variables
 │   │
 │   ├── constants/
-│   │   ├── enums.ts           # Role, SubmissionStatus enums
 │   │   └── messages.ts        # Shared error/success message strings
 │   │
 │   ├── controllers/
