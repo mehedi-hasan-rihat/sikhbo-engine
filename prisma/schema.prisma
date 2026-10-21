@@ -49,6 +49,7 @@ model Submission {
   studentId String
   student   User   @relation(fields: [studentId], references: [id])
 
+  @@unique([studentId, repoUrl])
   @@index([studentId])
   @@index([status])
   @@index([createdAt])

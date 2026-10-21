@@ -13,9 +13,9 @@ export const messages = {
     fetched: "Submission fetched successfully",
     listed: "Submissions fetched successfully",
     updated: "Submission status updated",
-    duplicate: "You have already submitted a project",
+    duplicate: "You have already submitted this repository",
     notFound: "Submission not found",
-    noSubmission: "You have not submitted a project yet",
+    noSubmission: "You have not submitted any projects yet",
   },
   validation: {
     failed: "Validation failed",

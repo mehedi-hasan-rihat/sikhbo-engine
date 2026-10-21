@@ -246,7 +246,7 @@ Running `prisma db seed` multiple times (e.g. after a DB reset) would throw a un
 |---|---|
 | Single `User` model for both roles | Avoids join complexity for auth. Role field is sufficient to differentiate behavior. |
 | UUID primary keys | No sequential enumeration. Safe to expose in API URLs. |
-| One-to-one enforced at app layer, not DB | Produces a clean business error instead of a raw constraint violation message. |
+| `@@unique([studentId, repoUrl])` instead of one-submission-per-student | Students can submit multiple projects; uniqueness is enforced per repo URL per student. DB constraint is the last line of defense; service layer checks first for a clean error message. |
 | `status` defaults at DB level | Safety net — correct default even if service layer omits it. |
 | `updatedAt` on Submission | Free audit trail for status changes without a separate history table. |
 | `@@map` on both models | Table names in DB are lowercase plural (`users`, `submissions`), consistent with SQL conventions, while Prisma models stay PascalCase. |
