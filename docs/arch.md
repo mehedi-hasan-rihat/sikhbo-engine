@@ -7,7 +7,7 @@
 
 ---
 
-## 1. Tech Stack
+## 1. Core Tech Stack
 
 | Layer | Technology |
 |---|---|
