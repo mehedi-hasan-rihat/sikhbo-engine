@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
-import type { Role } from "../constants/enums.js";
+import type { Role } from "../../generated/prisma/enums.js";
 import { ForbiddenError } from "./errorHandler.js";
 import { messages } from "../constants/messages.js";
 
