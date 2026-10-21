@@ -17,4 +17,11 @@ export const createSubmissionSchema = z.object({
     .max(500, "Description must be at most 500 characters"),
 });
 
+export const updateStatusSchema = z.object({
+  status: z.enum(["APPROVED", "REJECTED"], {
+    error: "Status must be APPROVED or REJECTED",
+  }),
+});
+
 export type CreateSubmissionInput = z.infer<typeof createSubmissionSchema>;
+export type UpdateStatusInput = z.infer<typeof updateStatusSchema>;

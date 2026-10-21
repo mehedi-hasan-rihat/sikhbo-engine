@@ -293,20 +293,21 @@ Get all submissions with pagination and optional status filter.
 ```json
 {
   "success": true,
+  "message": "Submissions fetched successfully",
   "data": {
     "submissions": [
       {
         "id": "uuid",
-        "projectName": "string",
-        "repoUrl": "string",
-        "liveUrl": "string",
-        "description": "string",
+        "projectName": "Sikhbo Dashboard",
+        "repoUrl": "https://github.com/mehedi/sikhbo-dashboard",
+        "liveUrl": "https://sikhbo-dashboard.vercel.app",
+        "description": "A full-stack project submission...",
         "status": "PENDING",
-        "createdAt": "ISO8601",
+        "createdAt": "2026-10-21T11:55:45.570Z",
         "student": {
           "id": "uuid",
-          "name": "string",
-          "email": "string"
+          "name": "Mehedi Hasan",
+          "email": "mehedi@example.com"
         }
       }
     ],
@@ -321,8 +322,20 @@ Get all submissions with pagination and optional status filter.
 ```
 
 `401 Unauthorized`
+```json
+{
+  "success": false,
+  "message": "Authentication required"
+}
+```
 
 `403 Forbidden`
+```json
+{
+  "success": false,
+  "message": "You do not have permission to access this resource"
+}
+```
 
 ---
 
@@ -337,6 +350,7 @@ Get aggregated submission statistics.
 ```json
 {
   "success": true,
+  "message": "Stats fetched successfully",
   "data": {
     "total": 50,
     "pending": 30,
@@ -347,8 +361,20 @@ Get aggregated submission statistics.
 ```
 
 `401 Unauthorized`
+```json
+{
+  "success": false,
+  "message": "Authentication required"
+}
+```
 
 `403 Forbidden`
+```json
+{
+  "success": false,
+  "message": "You do not have permission to access this resource"
+}
+```
 
 ---
 
@@ -362,9 +388,12 @@ Approve or reject a submission.
 **Request Body:**
 ```json
 {
-  "status": "APPROVED | REJECTED"
+  "status": "APPROVED"
 }
 ```
+
+**Validation:**
+- `status` — required, must be `APPROVED` or `REJECTED`
 
 **Responses:**
 
@@ -376,15 +405,40 @@ Approve or reject a submission.
   "data": {
     "id": "uuid",
     "status": "APPROVED",
-    "updatedAt": "ISO8601"
+    "updatedAt": "2026-10-21T12:30:00.000Z"
   }
 }
 ```
 
-`400 Bad Request` — invalid status value
+`400 Bad Request`
+```json
+{
+  "success": false,
+  "message": "Validation failed",
+  "errors": { "status": "Status must be APPROVED or REJECTED" }
+}
+```
 
 `401 Unauthorized`
+```json
+{
+  "success": false,
+  "message": "Authentication required"
+}
+```
 
 `403 Forbidden`
+```json
+{
+  "success": false,
+  "message": "You do not have permission to access this resource"
+}
+```
 
-`404 Not Found` — submission ID does not exist
+`404 Not Found`
+```json
+{
+  "success": false,
+  "message": "Submission not found"
+}
+```
