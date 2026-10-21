@@ -2,6 +2,7 @@ import { Router } from "express";
 import { authenticate } from "../middlewares/authenticate.js";
 import { authorize } from "../middlewares/authorize.js";
 import { validate } from "../middlewares/validate.js";
+import { submissionLimiter } from "../middlewares/rateLimiter.js";
 import { createSubmissionSchema } from "../validations/submission.validation.js";
 import * as submissionController from "../controllers/submission.controller.js";
 
@@ -9,6 +10,7 @@ export const submissionRouter = Router();
 
 submissionRouter.post(
   "/",
+  submissionLimiter,
   authenticate,
   authorize("STUDENT"),
   validate(createSubmissionSchema),
