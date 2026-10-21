@@ -81,7 +81,8 @@ backend/
 │   │
 │   ├── controllers/
 │   │   ├── auth.controller.ts
-│   │   └── submission.controller.ts
+│   │   ├── submission.controller.ts   # Student submission handlers
+│   │   └── mentor.controller.ts       # Mentor dashboard handlers
 │   │
 │   ├── middlewares/
 │   │   ├── authenticate.ts    # JWT verification → attaches req.user
@@ -91,13 +92,15 @@ backend/
 │   │   └── errorHandler.ts    # Global error handler (last middleware)
 │   │
 │   ├── routes/
-│   │   ├── index.ts           # Mounts all route groups under /api/v1
+│   │   ├── index.ts              # Mounts all route groups under /api/v1
 │   │   ├── auth.routes.ts
-│   │   └── submission.routes.ts
+│   │   ├── submission.routes.ts  # Student-only submission routes
+│   │   └── mentor.routes.ts      # Mentor-only routes
 │   │
 │   ├── services/
-│   │   ├── auth.service.ts    # register, login, token logic
-│   │   └── submission.service.ts  # create, getOwn, list, updateStatus, stats
+│   │   ├── auth.service.ts        # register, login, token logic
+│   │   ├── submission.service.ts  # Student: create, getMySubmissions
+│   │   └── mentor.service.ts      # Mentor: list, stats, updateStatus
 │   │
 │   ├── types/
 │   │   └── express.d.ts       # Extends Express Request with req.user type
@@ -173,13 +176,16 @@ validate(schema: ZodSchema)
 ```ts
 // Public
 router.post('/auth/register', validate(registerSchema), register)
+router.post('/auth/login', validate(loginSchema), login)
 
 // Student only
 router.post('/submissions', authenticate, authorize('STUDENT'), validate(submitSchema), createSubmission)
+router.get('/submissions', authenticate, authorize('STUDENT'), getMySubmissions)
 
-// Mentor only
-router.get('/submissions', authenticate, authorize('MENTOR'), listSubmissions)
-router.patch('/submissions/:id/status', authenticate, authorize('MENTOR'), validate(statusSchema), updateStatus)
+// Mentor only — /api/v1/mentor/submissions
+router.get('/mentor/submissions', authenticate, authorize('MENTOR'), listSubmissions)
+router.get('/mentor/submissions/stats', authenticate, authorize('MENTOR'), getStats)
+router.patch('/mentor/submissions/:id/status', authenticate, authorize('MENTOR'), validate(statusSchema), updateStatus)
 ```
 
 ---

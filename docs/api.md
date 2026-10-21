@@ -73,12 +73,12 @@ Register a new student account.
   "success": true,
   "message": "Account created successfully",
   "data": {
-    "token": "<jwt_token>"
+    "token": "eyJhbGci..."
   }
 }
 ```
 
-`400 Bad Request` — validation failure
+`400 Bad Request`
 ```json
 {
   "success": false,
@@ -87,7 +87,7 @@ Register a new student account.
 }
 ```
 
-`409 Conflict` — email already registered
+`409 Conflict`
 ```json
 {
   "success": false,
@@ -118,14 +118,21 @@ Authenticate an existing user (Student or Mentor).
   "success": true,
   "message": "Login successful",
   "data": {
-    "token": "<jwt_token>"
+    "token": "eyJhbGci..."
   }
 }
 ```
 
-`400 Bad Request` — missing fields
+`400 Bad Request`
+```json
+{
+  "success": false,
+  "message": "Validation failed",
+  "errors": { "email": "Invalid email format" }
+}
+```
 
-`401 Unauthorized` — invalid credentials
+`401 Unauthorized`
 ```json
 {
   "success": false,
@@ -135,7 +142,7 @@ Authenticate an existing user (Student or Mentor).
 
 ---
 
-## Submission Routes
+## Submission Routes — Student
 
 ### POST `/submissions`
 Submit a project. One submission per student only.
@@ -168,31 +175,50 @@ Submit a project. One submission per student only.
   "message": "Project submitted successfully",
   "data": {
     "id": "uuid",
-    "projectName": "string",
-    "repoUrl": "string",
-    "liveUrl": "string",
-    "description": "string",
+    "projectName": "Sikhbo Dashboard",
+    "repoUrl": "https://github.com/mehedi/sikhbo-dashboard",
+    "liveUrl": "https://sikhbo-dashboard.vercel.app",
+    "description": "A full-stack project submission...",
     "status": "PENDING",
-    "createdAt": "ISO8601"
+    "createdAt": "2026-10-21T11:55:45.570Z"
   }
 }
 ```
 
-`400 Bad Request` — validation failure
-
-`401 Unauthorized` — not logged in
-
-`403 Forbidden` — Mentor trying to submit
-
-`409 Conflict` — student already has a submission
+`400 Bad Request`
 ```json
 {
   "success": false,
-  "message": "You have already submitted a project"
+  "message": "Validation failed",
+  "errors": { "repoUrl": "Repo URL must be a github.com URL" }
 }
 ```
 
-`429 Too Many Requests` — rate limit hit
+`401 Unauthorized`
+```json
+{
+  "success": false,
+  "message": "Authentication required"
+}
+```
+
+`403 Forbidden`
+```json
+{
+  "success": false,
+  "message": "You do not have permission to access this resource"
+}
+```
+
+`409 Conflict`
+```json
+{
+  "success": false,
+  "message": "You have already submitted this repository"
+}
+```
+
+`429 Too Many Requests`
 ```json
 {
   "success": false,
@@ -202,8 +228,8 @@ Submit a project. One submission per student only.
 
 ---
 
-### GET `/submissions/me`
-Get the authenticated student's own submission.
+### GET `/submissions`
+Get all submissions by the authenticated student.
 
 **Access**: `STUDENT` only
 
@@ -213,25 +239,42 @@ Get the authenticated student's own submission.
 ```json
 {
   "success": true,
-  "data": {
-    "id": "uuid",
-    "projectName": "string",
-    "repoUrl": "string",
-    "liveUrl": "string",
-    "description": "string",
-    "status": "PENDING | APPROVED | REJECTED",
-    "createdAt": "ISO8601"
-  }
+  "message": "Submissions fetched successfully",
+  "data": [
+    {
+      "id": "uuid",
+      "projectName": "Sikhbo Dashboard",
+      "repoUrl": "https://github.com/mehedi/sikhbo-dashboard",
+      "liveUrl": "https://sikhbo-dashboard.vercel.app",
+      "description": "A full-stack project submission...",
+      "status": "PENDING",
+      "createdAt": "2026-10-21T11:55:45.570Z"
+    }
+  ]
 }
 ```
 
 `401 Unauthorized`
+```json
+{
+  "success": false,
+  "message": "Authentication required"
+}
+```
 
-`404 Not Found` — student hasn't submitted yet
+`404 Not Found`
+```json
+{
+  "success": false,
+  "message": "You have not submitted a project yet"
+}
+```
 
 ---
 
-### GET `/submissions`
+## Submission Routes — Mentor
+
+### GET `/mentor/submissions`
 Get all submissions with pagination and optional status filter.
 
 **Access**: `MENTOR` only
@@ -279,11 +322,11 @@ Get all submissions with pagination and optional status filter.
 
 `401 Unauthorized`
 
-`403 Forbidden` — Student trying to access
+`403 Forbidden`
 
 ---
 
-### GET `/submissions/stats`
+### GET `/mentor/submissions/stats`
 Get aggregated submission statistics.
 
 **Access**: `MENTOR` only
@@ -309,7 +352,7 @@ Get aggregated submission statistics.
 
 ---
 
-### PATCH `/submissions/:id/status`
+### PATCH `/mentor/submissions/:id/status`
 Approve or reject a submission.
 
 **Access**: `MENTOR` only

@@ -31,8 +31,8 @@ The system enforces strict role-based access control — students can only submi
 ### 3.1 Student (`STUDENT`)
 - A registered learner on the platform.
 - Can sign up via the public registration page.
-- Has one submission slot — cannot submit more than once.
-- Can view their own submission and its current review status.
+- Can submit multiple projects, but each GitHub repository can only be submitted once per student.
+- Can view all their own submissions and their current review statuses.
 - Cannot access any other student's submission or the mentor dashboard.
 
 ### 3.2 Mentor (`MENTOR`)
@@ -71,9 +71,10 @@ The system enforces strict role-based access control — students can only submi
 ### 4.2 Submission Portal (Student View)
 
 **Business Logic:**
-- A student may submit exactly one project. Any subsequent attempt is rejected with a clear conflict error.
+- A student may submit multiple projects. Each GitHub repository URL can only be submitted once per student — duplicate repo submissions are rejected.
+- Duplicate prevention is enforced at both the application layer (service check) and database layer (`@@unique([studentId, repoUrl])` constraint).
 - Submission is only available to authenticated students.
-- The student can view the status of their own submission at any time.
+- The student can view all their submissions at any time.
 - A student cannot view or access another student's submission.
 
 **Submission Fields:**
@@ -164,7 +165,7 @@ The system enforces strict role-based access control — students can only submi
 
 | # | Question | Decision |
 |---|---|---|
-| 1 | Can a student edit a submitted project? | No — submission is final once created in v1. |
+| 1 | Can a student submit multiple projects? | Yes — students can submit multiple projects, but the same GitHub repo URL cannot be submitted twice by the same student. |
 | 2 | Can a mentor undo an approval/rejection? | Yes — status can be toggled freely by any mentor. |
 | 3 | Should rate limiting apply globally or per-user? | Per-IP for submission endpoint to catch unauthenticated spam. |
 | 4 | What happens if a student tries to view another student's submission? | Denied — ownership check enforced at service layer. |
