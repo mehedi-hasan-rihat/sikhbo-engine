@@ -14,4 +14,5 @@ export const env = {
   DATABASE_URL: requireEnv("DATABASE_URL"),
   JWT_SECRET: requireEnv("JWT_SECRET"),
   JWT_EXPIRES_IN: process.env["JWT_EXPIRES_IN"] ?? "7d",
+  FRONTEND_URL: process.env["FRONTEND_URL"] ?? "http://localhost:3000",
 };

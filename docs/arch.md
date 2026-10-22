@@ -231,3 +231,4 @@ All config is loaded and validated in `src/config/env.ts` at startup. If a requi
 | `JWT_EXPIRES_IN` | Token expiry duration (e.g. `7d`) |
 | `PORT` | HTTP server port (default `5000`) |
 | `NODE_ENV` | `development` or `production` |
+| `FRONTEND_URL` | Allowed CORS origin (e.g. `http://localhost:3000`) |

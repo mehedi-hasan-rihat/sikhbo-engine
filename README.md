@@ -39,6 +39,7 @@ JWT_SECRET="your-super-secret-jwt-key"
 JWT_EXPIRES_IN="7d"
 PORT=5000
 NODE_ENV="development"
+FRONTEND_URL="http://localhost:3000"
 ```
 
 **3. Run database migrations**
