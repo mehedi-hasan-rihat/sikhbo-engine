@@ -1,7 +1,7 @@
 import { prisma } from "../config/prisma.js";
 import { hashPassword, comparePassword } from "../utils/hash.js";
 import { signToken } from "../utils/token.js";
-import { ConflictError, UnauthorizedError } from "../middlewares/errorHandler.js";
+import { ConflictError, NotFoundError, UnauthorizedError } from "../middlewares/errorHandler.js";
 import { messages } from "../constants/messages.js";
 import type { RegisterInput, LoginInput } from "../validations/auth.validation.js";
 
@@ -43,4 +43,23 @@ export async function login(data: LoginInput): Promise<string> {
   }
 
   return signToken({ userId: user.id, role: user.role, email: user.email });
+}
+
+export async function getMe(userId: string) {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+      createdAt: true,
+    },
+  });
+
+  if (!user) {
+    throw new NotFoundError("User not found");
+  }
+
+  return user;
 }

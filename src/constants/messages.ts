@@ -2,6 +2,7 @@ export const messages = {
   auth: {
     registered: "Account created successfully",
     loggedIn: "Login successful",
+    loggedOut: "Logged out successfully",
     invalidCredentials: "Invalid email or password",
     emailInUse: "Email already in use",
     unauthorized: "Authentication required",

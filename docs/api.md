@@ -142,6 +142,63 @@ Authenticate an existing user (Student or Mentor).
 
 ---
 
+### POST `/auth/logout`
+Invalidate the current session. Since auth is JWT-based and stateless, the client must discard the token. This endpoint confirms the action server-side.
+
+**Access**: Authenticated (any role)
+
+**Responses:**
+
+`200 OK`
+```json
+{
+  "success": true,
+  "message": "Logged out successfully"
+}
+```
+
+`401 Unauthorized`
+```json
+{
+  "success": false,
+  "message": "Authentication required"
+}
+```
+
+---
+
+### GET `/auth/me`
+Get the authenticated user's profile.
+
+**Access**: Authenticated (any role)
+
+**Responses:**
+
+`200 OK`
+```json
+{
+  "success": true,
+  "message": "User fetched successfully",
+  "data": {
+    "id": "uuid",
+    "name": "Mehedi Hasan",
+    "email": "mehedi@example.com",
+    "role": "STUDENT",
+    "createdAt": "2026-10-21T11:55:45.570Z"
+  }
+}
+```
+
+`401 Unauthorized`
+```json
+{
+  "success": false,
+  "message": "Authentication required"
+}
+```
+
+---
+
 ## Submission Routes — Student
 
 ### POST `/submissions`

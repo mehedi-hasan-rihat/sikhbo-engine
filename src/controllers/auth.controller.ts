@@ -19,3 +19,21 @@ export async function login(req: Request, res: Response): Promise<void> {
     data: { token },
   });
 }
+
+export async function logout(_req: Request, res: Response): Promise<void> {
+  // JWT is stateless — logout is handled client-side by discarding the token.
+  // This endpoint exists as a convenience for clients that need a logout call.
+  res.status(200).json({
+    success: true,
+    message: messages.auth.loggedOut,
+  });
+}
+
+export async function me(req: Request, res: Response): Promise<void> {
+  const user = await authService.getMe(req.user!.userId);
+  res.status(200).json({
+    success: true,
+    message: "User fetched successfully",
+    data: user,
+  });
+}

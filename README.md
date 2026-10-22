@@ -91,6 +91,8 @@ Auth: `Authorization: Bearer <token>`
 |---|---|---|---|
 | `POST` | `/auth/register` | Public | Register a new student account |
 | `POST` | `/auth/login` | Public | Login for students and mentors |
+| `POST` | `/auth/logout` | Authenticated | Logout (client should discard token) |
+| `GET` | `/auth/me` | Authenticated | Get current user's profile |
 
 ### Student
 
